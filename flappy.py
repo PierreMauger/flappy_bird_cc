@@ -182,7 +182,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     bird.jump()
-        
+
         pipe_ind = 0
         bird.move()
         add_pipe = False
