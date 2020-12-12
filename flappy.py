@@ -20,6 +20,8 @@ BASE = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs/", "base.pn
 
 PIPE = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs/", "pipe.png")))
 
+STAT_FONT = pygame.font.SysFont("comicsansms", 30)
+
 class Pipe:
     GAP = 200
     VEL = 5
@@ -151,10 +153,12 @@ class Bird:
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
 
-def draw_window(win, bird, base, pipes):
+def draw_window(win, bird, base, pipes, score):
     win.blit(BACKGROUND, (0, 0))
     for pipe in pipes:
         pipe.draw(win)
+    text = STAT_FONT.render("Score: " + str(score), 1, (255, 255, 255))
+    win.blit(text, (WIN_WIDTH - 10 - text.get_width(), 10))
     bird.draw(win)
     base.draw(win)
     pygame.display.update()
@@ -166,6 +170,7 @@ def main():
     bird = Bird(230, 350)
     base = Base(730)
     pipes = [Pipe(600)]
+    score = 0
 
     while (run):
         clock.tick(30)
@@ -189,6 +194,7 @@ def main():
             if (not (pipe.passed) and (pipe.x < bird.x)):
                 pipe.passed = True
                 add_pipe = True
+                score += 1
             if (pipe.x + pipe.PIPE_TOP.get_width() < 0):
                 rem.append(pipe)
             pipe.move()
@@ -200,7 +206,7 @@ def main():
             pipes.remove(r)
 
         base.move()
-        draw_window(win, bird, base, pipes)
+        draw_window(win, bird, base, pipes, score)
 
 if __name__ == "__main__":
     main()
